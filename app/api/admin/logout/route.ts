@@ -3,7 +3,8 @@ import { cookies } from 'next/headers'
 import clientPromise from '@/lib/mongodb'
 
 export async function POST() {
-  const token = cookies().get('admin_token')?.value
+  const cookieStore = cookies()
+  const token = cookieStore.get('admin_token')?.value
 
   if (token) {
     const client = await clientPromise
@@ -11,7 +12,7 @@ export async function POST() {
     await db.collection("admin_sessions").deleteOne({ token })
   }
 
-  cookies().delete('admin_token')
+  cookieStore.delete('admin_token')
   return NextResponse.json({ success: true })
 }
 
