@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       expiresAt: expirationDate
     })
 
-    cookies().set('admin_token', token, { 
+    ;(await cookies()).set('admin_token', token, { 
       httpOnly: true,
       expires: expirationDate,
       sameSite: 'strict',
