@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import clientPromise from './mongodb'
 
 export async function checkAuth() {
-  const token = cookies().get('admin_token')?.value
+  const token = (await cookies()).get('admin_token')?.value
 
   if (!token) {
     return null
