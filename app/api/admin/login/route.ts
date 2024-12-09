@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
 import clientPromise from '@/lib/mongodb'
 import crypto from 'crypto'
 
@@ -20,16 +19,17 @@ export async function POST(request: Request) {
       expiresAt: expirationDate
     })
 
-    ;(await cookies()).set('admin_token', token, { 
+    // Use NextResponse to set the cookie
+    const response = NextResponse.json({ success: true })
+    response.cookies.set('admin_token', token, { 
       httpOnly: true,
       expires: expirationDate,
       sameSite: 'strict',
-      secure: process.env.NODE_ENV === 'production'
+      secure: process.env.NODE_ENV === 'production',
     })
 
-    return NextResponse.json({ success: true })
+    return response
   } else {
     return NextResponse.json({ success: false }, { status: 401 })
   }
 }
-
